@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.reproductor.ReproductorController"
+            stylesheets="@style.css"
+            styleClass="root">
+
+    <!-- SIDEBAR -->
+    <left>
+
+        <VBox spacing="20"
+              prefWidth="260"
+              styleClass="sidebar">
+
+            <padding>
+                <Insets top="25" right="20" bottom="25" left="20"/>
+            </padding>
+
+            <Label text="Reproductor multimedia"
+                   styleClass="logo"/>
+
+            <Button text="Agregar canciones"
+                    onAction="#agregarCanciones"
+                    styleClass="sidebarButton"/>
+
+            <Button text="Eliminar canción"
+                    onAction="#eliminarCancion"
+                    styleClass="sidebarButton"/>
+
+            <CheckBox fx:id="checkRandom"
+                      text="Random"
+                      styleClass="checkBox"/>
+
+            <CheckBox fx:id="checkLoop"
+                      text="Loop"
+                      styleClass="checkBox"/>
+
+        </VBox>
+
+    </left>
+
+    <!-- CENTRO -->
+    <center>
+
+        <VBox spacing="20"
+              styleClass="centerPane">
+
+            <padding>
+                <Insets top="30" right="30" bottom="20" left="30"/>
+            </padding>
+
+            <Label text="Cola de reproducción"
+                   styleClass="title"/>
+
+            <TableView fx:id="tablaCanciones"
+                       VBox.vgrow="ALWAYS"
+                       styleClass="tableView">
+
+                <columns>
+
+                    <TableColumn fx:id="colNombre"
+                                 text="Título"
+                                 prefWidth="350"/>
+
+                    <TableColumn fx:id="colArtista"
+                                 text="Artista"
+                                 prefWidth="300"/>
+
+                    <TableColumn fx:id="colAnio"
+                                 text="Año"
+                                 prefWidth="120"/>
+                    <TableColumn fx:id="colAlbum"
+                                 text="Álbum"
+                                 prefWidth="220"/>
+
+                    <TableColumn fx:id="colDuracion"
+                                 text="Duración"
+                                 prefWidth="120"/>
+                </columns>
+
+            </TableView>
+
+        </VBox>
+
+    </center>
+
+    <!-- BOTTOM PLAYER -->
+    <bottom>
+
+        <VBox spacing="15"
+              styleClass="bottomPlayer">
+
+            <padding>
+                <Insets top="15" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- timeline -->
+
+            <HBox spacing="10"
+                  alignment="CENTER">
+
+                <Label fx:id="lblTiempoActual"
+                       text="00:00"
+                       styleClass="timeLabel"/>
+
+                <Slider fx:id="sliderTiempo"
+                        HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="lblDuracion"
+                       text="00:00"
+                       styleClass="timeLabel"/>
+
+            </HBox>
+
+            <!-- info canción -->
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="30">
+
+                <HBox spacing="15"
+                      alignment="CENTER_LEFT">
+
+                    <ImageView fx:id="imgCover"
+                               fitWidth="80"
+                               fitHeight="80"
+                               preserveRatio="true"/>
+
+                    <VBox spacing="5">
+
+                        <Label fx:id="lblCancion"
+                               text="No hay canción"
+                               styleClass="songTitle"/>
+
+                        <Label fx:id="lblArtista"
+                               text="..."
+                               styleClass="songArtist"/>
+
+                    </VBox>
+
+                </HBox>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <!-- controles -->
+
+                <HBox spacing="20"
+                      alignment="CENTER">
+
+                    <Button text="⏮"
+                            onAction="#anterior"
+                            styleClass="controlButton"/>
+
+                    <Button fx:id="btnPlayPause"
+                            text="▶"
+                            onAction="#togglePlayPause"
+                            styleClass="playButton"/>
+
+                    <Button text="⏭"
+                            onAction="#siguiente"
+                            styleClass="controlButton"/>
+
+                </HBox>
+
+            </HBox>
+
+        </VBox>
+
+    </bottom>
+
+</BorderPane>
