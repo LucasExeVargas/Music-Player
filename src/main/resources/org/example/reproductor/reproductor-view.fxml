@@ -88,7 +88,7 @@
 
     </center>
 
-    <!-- BOTTOM PLAYER -->
+    <!-- CONTROLADORES -->
     <bottom>
 
         <VBox spacing="15"
@@ -116,7 +116,7 @@
 
             </HBox>
 
-            <!-- info canción -->
+            <!-- INFO CANCION -->
 
             <HBox alignment="CENTER_LEFT"
                   spacing="30">
@@ -145,7 +145,7 @@
 
                 <Pane HBox.hgrow="ALWAYS"/>
 
-                <!-- controles -->
+                <!-- CONTROLES -->
 
                 <HBox spacing="20"
                       alignment="CENTER">
@@ -162,6 +162,14 @@
                     <Button text="⏭"
                             onAction="#siguiente"
                             styleClass="controlButton"/>
+                    <Label text="🔊"
+                           style="-fx-text-fill: white;"/>
+
+                    <Slider fx:id="sliderVolumen"
+                            prefWidth="120"
+                            min="0"
+                            max="100"
+                            value="50"/>
 
                 </HBox>
 

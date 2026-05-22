@@ -59,6 +59,9 @@ public class ReproductorController {
     private CheckBox checkRandom;
 
     @FXML
+    private Slider sliderVolumen;
+
+    @FXML
     private TableColumn<Song, String> colAlbum;
 
     @FXML
@@ -100,6 +103,17 @@ public class ReproductorController {
         colDuracion.setCellValueFactory(
                 new PropertyValueFactory<>("duracion"));
 
+        sliderVolumen.valueProperty().addListener(
+                (obs, oldVal, newVal) -> {
+
+                    if (mediaPlayer != null) {
+
+                        mediaPlayer.setVolume(
+                                newVal.doubleValue() / 100.0
+                        );
+                    }
+                }
+        );
 
         tablaCanciones.setItems(canciones);
 
@@ -175,8 +189,6 @@ public class ReproductorController {
                                 segundos % 60
                         );
 
-                // fallback si falta metadata
-
                 if (titulo.isEmpty()) {
                     titulo = file.getName()
                             .replace(".mp3", "");
@@ -214,18 +226,18 @@ public class ReproductorController {
                     } else {
 
                         portada = new Image(
-                                Objects.requireNonNull(getClass().getResourceAsStream(
+                                getClass().getResourceAsStream(
                                         "/default_cover.png"
-                                ))
+                                )
                         );
                     }
 
                 } catch (Exception e) {
 
                     portada = new Image(
-                            Objects.requireNonNull(getClass().getResourceAsStream(
+                            getClass().getResourceAsStream(
                                     "/default_cover.png"
-                            ))
+                            )
                     );
                 }
 
@@ -316,6 +328,7 @@ public class ReproductorController {
         lblCancion.setText(song.getNombre());
 
         lblArtista.setText(song.getArtista());
+
         imgCover.setImage(song.getPortada());
 
         mediaPlayer.currentTimeProperty().addListener(
@@ -342,6 +355,19 @@ public class ReproductorController {
 
             lblDuracion.setText(
                     formatTime(total)
+            );
+        });
+
+        mediaPlayer.setVolume(
+                sliderVolumen.getValue() / 100.0
+        );
+
+        sliderVolumen.setOnScroll(event -> {
+
+            double delta = event.getDeltaY();
+
+            sliderVolumen.setValue(
+                    sliderVolumen.getValue() + delta / 10
             );
         });
 
