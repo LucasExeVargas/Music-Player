@@ -18,7 +18,8 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 import java.util.*;
 
-import static javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY;
+import recursos.ListaDoble;
+import recursos.ListaOrdenada;
 
 public class ReproductorController {
 
@@ -70,7 +71,10 @@ public class ReproductorController {
     @FXML
     private ImageView imgCover;
 
-    private final ObservableList<Song> canciones =
+    private ListaDoble canciones =
+            new ListaDoble();
+
+    private final ObservableList<Song> observableCanciones =
             FXCollections.observableArrayList();
 
     private MediaPlayer mediaPlayer;
@@ -82,12 +86,27 @@ public class ReproductorController {
     private final List<Integer> randomPendientes =
             new ArrayList<>();
 
+    private String criterioActual = "nombre";
+
+    @FXML
+    public void ordenarPorNombre() {
+        ordenar("nombre");
+    }
+
+    @FXML
+    public void ordenarPorArtista() {
+        ordenar("artista");
+    }
+
+    @FXML
+    public void ordenarPorAnio() {
+        ordenar("anio");
+    }
+
     @FXML
     public void initialize() {
 
-        tablaCanciones.setColumnResizePolicy(
-                CONSTRAINED_RESIZE_POLICY
-        );
+        tablaCanciones.setItems(observableCanciones);
 
         colNombre.setCellValueFactory(
                 new PropertyValueFactory<>("nombre"));
@@ -115,7 +134,7 @@ public class ReproductorController {
                 }
         );
 
-        tablaCanciones.setItems(canciones);
+        // tablaCanciones.setItems(canciones);
 
         tablaCanciones.setOnMouseClicked(e -> {
 
@@ -148,15 +167,12 @@ public class ReproductorController {
                 )
         );
 
-        List<File> archivos =
-                chooser.showOpenMultipleDialog(null);
+        List<File> archivos = chooser.showOpenMultipleDialog(null);
 
         if (archivos == null) {
             return;
         }
-
         for (File file : archivos) {
-
             try {
 
                 AudioFile audioFile =
@@ -257,6 +273,13 @@ public class ReproductorController {
                 e.printStackTrace();
             }
         }
+        randomPendientes.clear();
+        //ordenar(criterioActual);
+        observableCanciones.clear();
+
+        for (Object obj : canciones) {
+            observableCanciones.add((Song) obj);
+        }
     }
 
     @FXML
@@ -268,7 +291,10 @@ public class ReproductorController {
 
         if (song != null) {
             canciones.remove(song);
+            observableCanciones.remove(song);
         }
+        randomPendientes.clear();
+        tablaCanciones.refresh();
     }
 
     @FXML
@@ -280,7 +306,7 @@ public class ReproductorController {
 
                 indiceActual = 0;
 
-                reproducir(canciones.get(0));
+                reproducir((Song) canciones.get(0));
             }
 
             return;
@@ -334,28 +360,19 @@ public class ReproductorController {
         mediaPlayer.currentTimeProperty().addListener(
                 (obs, oldTime, newTime) -> {
 
-                    sliderTiempo.setValue(
-                            newTime.toSeconds()
-                    );
+                    sliderTiempo.setValue(newTime.toSeconds());
 
-                    lblTiempoActual.setText(
-                            formatTime(newTime)
-                    );
+                    lblTiempoActual.setText(formatTime(newTime));
                 }
         );
 
         mediaPlayer.setOnReady(() -> {
 
-            Duration total =
-                    mediaPlayer.getTotalDuration();
+            Duration total = mediaPlayer.getTotalDuration();
 
-            sliderTiempo.setMax(
-                    total.toSeconds()
-            );
+            sliderTiempo.setMax(total.toSeconds());
 
-            lblDuracion.setText(
-                    formatTime(total)
-            );
+            lblDuracion.setText(formatTime(total));
         });
 
         mediaPlayer.setVolume(
@@ -366,39 +383,29 @@ public class ReproductorController {
 
             double delta = event.getDeltaY();
 
-            sliderVolumen.setValue(
-                    sliderVolumen.getValue() + delta / 10
-            );
+            sliderVolumen.setValue(sliderVolumen.getValue() + delta / 10);
         });
 
         sliderTiempo.setOnMousePressed(event -> {
 
-            double porcentaje =
-                    event.getX() / sliderTiempo.getWidth();
+            double porcentaje = event.getX() / sliderTiempo.getWidth();
 
-            double tiempo =
-                    porcentaje * sliderTiempo.getMax();
+            double tiempo = porcentaje * sliderTiempo.getMax();
 
             sliderTiempo.setValue(tiempo);
 
-            mediaPlayer.seek(
-                    Duration.seconds(tiempo)
-            );
+            mediaPlayer.seek(Duration.seconds(tiempo));
         });
 
         sliderTiempo.setOnMouseDragged(event -> {
 
-            double porcentaje =
-                    event.getX() / sliderTiempo.getWidth();
+            double porcentaje = event.getX() / sliderTiempo.getWidth();
 
-            double tiempo =
-                    porcentaje * sliderTiempo.getMax();
+            double tiempo = porcentaje * sliderTiempo.getMax();
 
             sliderTiempo.setValue(tiempo);
 
-            mediaPlayer.seek(
-                    Duration.seconds(tiempo)
-            );
+            mediaPlayer.seek(Duration.seconds(tiempo));
         });
 
         mediaPlayer.setOnEndOfMedia(this::manejarFinCancion);
@@ -407,29 +414,19 @@ public class ReproductorController {
     private void manejarFinCancion() {
 
         if (checkRandom.isSelected()) {
-
             reproducirRandom();
-
             return;
         }
-
         indiceActual++;
-
         if (indiceActual >= canciones.size()) {
-
             if (checkLoop.isSelected()) {
-
                 indiceActual = 0;
-
             } else {
-
                 btnPlayPause.setText("▶");
-
                 return;
             }
         }
-
-        reproducir(canciones.get(indiceActual));
+        reproducir((Song) canciones.get(indiceActual));
     }
 
     @FXML
@@ -438,31 +435,20 @@ public class ReproductorController {
         if (canciones.isEmpty()) {
             return;
         }
-
         if (checkRandom.isSelected()) {
-
             reproducirRandom();
-
             return;
         }
-
         indiceActual++;
-
         if (indiceActual >= canciones.size()) {
-
             if (checkLoop.isSelected()) {
-
                 indiceActual = 0;
-
             } else {
-
                 indiceActual = canciones.size() - 1;
-
                 return;
             }
         }
-
-        reproducir(canciones.get(indiceActual));
+        reproducir((Song) canciones.get(indiceActual));
     }
 
     @FXML
@@ -471,59 +457,81 @@ public class ReproductorController {
         if (canciones.isEmpty()) {
             return;
         }
-
         indiceActual--;
-
         if (indiceActual < 0) {
-
             if (checkLoop.isSelected()) {
-
-                indiceActual =
-                        canciones.size() - 1;
-
+                indiceActual = canciones.size() - 1;
             } else {
-
                 indiceActual = 0;
-
                 return;
             }
         }
-
-        reproducir(canciones.get(indiceActual));
+        reproducir((Song) canciones.get(indiceActual));
     }
+
 
     private void reproducirRandom() {
 
         if (randomPendientes.isEmpty()) {
-
-            for (int i = 0;
-                 i < canciones.size();
-                 i++) {
-
+            for (int i = 0; i < canciones.size(); i++) {
                 randomPendientes.add(i);
             }
-
             Collections.shuffle(randomPendientes);
         }
-
-        indiceActual =
-                randomPendientes.remove(0);
-
-        reproducir(canciones.get(indiceActual));
+        indiceActual = randomPendientes.remove(0);
+        reproducir((Song) canciones.get(indiceActual));
     }
 
     private String formatTime(Duration duration) {
 
-        int minutos =
-                (int) duration.toMinutes();
+        int minutos = (int) duration.toMinutes();
 
-        int segundos =
-                (int) duration.toSeconds() % 60;
+        int segundos = (int) duration.toSeconds() % 60;
 
-        return String.format(
-                "%02d:%02d",
-                minutos,
-                segundos
-        );
+        return String.format("%02d:%02d", minutos, segundos);
+    }
+
+    private void ordenar(String criterio) {
+        this.criterioActual = criterio;
+        ListaOrdenada ordenada = new ListaOrdenada();
+
+        for (Object obj : canciones) { // paso los elementos de la lista a la nueva lista ordenada
+            Song song = (Song) obj;
+            if (criterio.equalsIgnoreCase("artista")) {
+                ordenada.addOrderedPorArtista(song);
+            } else if (criterio.equalsIgnoreCase("anio")) {
+                ordenada.addOrderedPorAnio(song);
+            } else {
+                ordenada.addOrderedPorNombre(song);
+            }
+        }
+        this.canciones = ordenada;  //actualizo la lista actual, a la lista ordenada
+        observableCanciones.clear();
+        for (Object obj : canciones) {
+            observableCanciones.add((Song) obj);
+        }
+        // Si hay una canción reproduciéndose, recalculamos su índice en la nueva lista
+        Song seleccionada = tablaCanciones.getSelectionModel().getSelectedItem();
+        if (seleccionada != null) {
+            indiceActual = canciones.indexOf(seleccionada);
+        }
+    }
+    @FXML
+    public void stop() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer = null;
+        }
+        pausado = false;
+        btnPlayPause.setText("▶");
+        indiceActual = -1; // Reseteamos el índice
+
+        lblCancion.setText("No hay canción");
+        lblArtista.setText("...");
+        imgCover.setImage(null);
+        sliderTiempo.setValue(0);
+        lblTiempoActual.setText("00:00");
+
+        tablaCanciones.refresh();
     }
 }

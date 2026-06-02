@@ -33,11 +33,11 @@
 
             <CheckBox fx:id="checkRandom"
                       text="Random"
-                      styleClass="checkBox"/>
+                      styleClass="customCheckBox"/>
 
             <CheckBox fx:id="checkLoop"
                       text="Loop"
-                      styleClass="checkBox"/>
+                      styleClass="customCheckBox"/>
 
         </VBox>
 
@@ -55,6 +55,13 @@
 
             <Label text="Cola de reproducción"
                    styleClass="title"/>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Ordenar por:" styleClass="sidebarButton"/>
+                <Button text="Nombre" onAction="#ordenarPorNombre" styleClass = "sortButton"/>
+                <Button text="Artista" onAction="#ordenarPorArtista" styleClass = "sortButton"/>
+                <Button text="Año" onAction="#ordenarPorAnio" styleClass = "sortButton"/>
+            </HBox>
 
             <TableView fx:id="tablaCanciones"
                        VBox.vgrow="ALWAYS"
@@ -158,6 +165,10 @@
                             text="▶"
                             onAction="#togglePlayPause"
                             styleClass="playButton"/>
+
+                    <Button text="⏹"
+                            onAction="#stop"
+                            styleClass="controlButton"/>
 
                     <Button text="⏭"
                             onAction="#siguiente"

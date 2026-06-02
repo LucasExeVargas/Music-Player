@@ -26,9 +26,40 @@
     -fx-background-color: #ff7b00;
 }
 
-.checkBox {
+.customCheckBox {
+
     -fx-text-fill: white;
+
     -fx-font-size: 14px;
+
+    -fx-background-color: #242424;
+
+    -fx-background-radius: 12;
+
+    -fx-padding: 10 14 10 14;
+
+    -fx-cursor: hand;
+}
+
+.customCheckBox:hover {
+
+    -fx-background-color: #ff7b00;
+}
+
+.customCheckBox .box {
+
+    -fx-background-color: #1f1f1f;
+
+    -fx-border-color: white;
+
+    -fx-border-radius: 4;
+
+    -fx-background-radius: 4;
+}
+
+.customCheckBox:selected .mark {
+
+    -fx-background-color: white;
 }
 
 .centerPane {
@@ -125,4 +156,26 @@
 
 .slider {
     -fx-pref-height: 20;
+}
+
+.sortButton {
+    -fx-background-color: #242424;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+}
+
+.sortButton:hover {
+    -fx-background-color: #ff7b00;
+}
+
+.table-row-cell.playing-row {
+    -fx-background-color: #ff7b00;
+    -fx-text-background-color: white;
+}
+
+.table-row-cell.playing-row:hover {
+    -fx-background-color: #ff9434;
 }
