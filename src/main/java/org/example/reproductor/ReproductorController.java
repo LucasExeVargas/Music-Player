@@ -83,8 +83,8 @@ public class ReproductorController {
 
     private boolean pausado = false;
 
-    private final List<Integer> randomPendientes =
-            new ArrayList<>();
+    private final ListaDoble randomPendientes =
+            new ListaDoble();
 
     private String criterioActual = "nombre";
 
@@ -473,12 +473,16 @@ public class ReproductorController {
     private void reproducirRandom() {
 
         if (randomPendientes.isEmpty()) {
+            List<Integer> indices = new ArrayList<>();
             for (int i = 0; i < canciones.size(); i++) {
-                randomPendientes.add(i);
+                indices.add(i);
             }
-            Collections.shuffle(randomPendientes);
+            Collections.shuffle(indices);
+            for (Integer indice : indices) {
+                randomPendientes.add(indice);
+            }
         }
-        indiceActual = randomPendientes.remove(0);
+        indiceActual = (Integer) randomPendientes.remove(0);
         reproducir((Song) canciones.get(indiceActual));
     }
 
