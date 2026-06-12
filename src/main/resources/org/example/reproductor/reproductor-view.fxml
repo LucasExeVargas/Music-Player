@@ -65,28 +65,29 @@
 
             <TableView fx:id="tablaCanciones"
                        VBox.vgrow="ALWAYS"
+                       columnResizePolicy="CONSTRAINED_RESIZE_POLICY"
                        styleClass="tableView">
 
                 <columns>
 
                     <TableColumn fx:id="colNombre"
                                  text="Título"
-                                 prefWidth="350"/>
+                                 prefWidth="200"/>
 
                     <TableColumn fx:id="colArtista"
                                  text="Artista"
-                                 prefWidth="300"/>
+                                 prefWidth="200"/>
 
                     <TableColumn fx:id="colAnio"
                                  text="Año"
-                                 prefWidth="120"/>
+                                 prefWidth="200"/>
                     <TableColumn fx:id="colAlbum"
                                  text="Álbum"
-                                 prefWidth="220"/>
+                                 prefWidth="200"/>
 
                     <TableColumn fx:id="colDuracion"
                                  text="Duración"
-                                 prefWidth="120"/>
+                                 prefWidth="200"/>
                 </columns>
 
             </TableView>
