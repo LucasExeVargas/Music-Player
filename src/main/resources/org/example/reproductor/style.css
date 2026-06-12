@@ -78,7 +78,13 @@
     -fx-background-radius: 12;
     -fx-border-radius: 12;
 }
+.table-view .column-header-background {
+    -fx-background-color: #2a2a2a;
+}
 
+.table-view .column-header-background .filler {
+    -fx-background-color: #2a2a2a;
+}
 .table-view .column-header {
     -fx-background-color: #2a2a2a;
 }

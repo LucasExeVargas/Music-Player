@@ -65,6 +65,7 @@
 
             <TableView fx:id="tablaCanciones"
                        VBox.vgrow="ALWAYS"
+
                        styleClass="tableView">
 
                 <columns>

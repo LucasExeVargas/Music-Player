@@ -83,8 +83,8 @@ public class ReproductorController {
 
     private boolean pausado = false;
 
-    private final List<Integer> randomPendientes =
-            new ArrayList<>();
+    private final ListaDoble randomPendientes =
+            new ListaDoble();
 
     private String criterioActual = "nombre";
 
@@ -107,6 +107,9 @@ public class ReproductorController {
     public void initialize() {
 
         tablaCanciones.setItems(observableCanciones);
+        tablaCanciones.setColumnResizePolicy(
+                TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS
+        );
 
         colNombre.setCellValueFactory(
                 new PropertyValueFactory<>("nombre"));
@@ -473,12 +476,23 @@ public class ReproductorController {
     private void reproducirRandom() {
 
         if (randomPendientes.isEmpty()) {
-            for (int i = 0; i < canciones.size(); i++) {
-                randomPendientes.add(i);
+            int total = canciones.size();
+            int[] indices = new int[total];
+            for (int i = 0; i < total; i++) {
+                indices[i] = i;
             }
-            Collections.shuffle(randomPendientes);
+            Random random = new Random();
+            for (int i = total - 1; i > 0; i--) {
+                int j = random.nextInt(i + 1);
+                int temp = indices[i];
+                indices[i] = indices[j];
+                indices[j] = temp;
+            }
+            for (int indice : indices) {
+                randomPendientes.add(indice);
+            }
         }
-        indiceActual = randomPendientes.remove(0);
+        indiceActual = (Integer) randomPendientes.remove(0);
         reproducir((Song) canciones.get(indiceActual));
     }
 
