@@ -108,9 +108,6 @@ public class ReproductorController {
 
         tablaCanciones.setItems(observableCanciones);
 
-        tablaCanciones.getSelectionModel()
-                .setSelectionMode(SelectionMode.MULTIPLE);
-
         colNombre.setCellValueFactory(
                 new PropertyValueFactory<>("nombre"));
 
@@ -301,45 +298,11 @@ public class ReproductorController {
     }
 
     @FXML
-    public void eliminarSeleccionadas() {
+    public void limpiar() {
 
-        ObservableList<Song> seleccionadas =
-                tablaCanciones.getSelectionModel()
-                        .getSelectedItems();
-
-        if (seleccionadas.isEmpty()) {
-            return;
-        }
-
-        Alert confirmacion =
-                new Alert(Alert.AlertType.CONFIRMATION);
-
-        confirmacion.setTitle("Eliminar canciones");
-        confirmacion.setHeaderText(null);
-        confirmacion.setContentText(
-                "¿Eliminar " + seleccionadas.size()
-                        + " canción(es) seleccionada(s)?");
-
-        Optional<ButtonType> respuesta =
-                confirmacion.showAndWait();
-
-        if (respuesta.isEmpty()
-                || respuesta.get() != ButtonType.OK) {
-            return;
-        }
-
-        // Copiamos a un arreglo para eliminar sin modificar
-        // la lista de selección mientras la recorremos
-        Song[] aEliminar =
-                seleccionadas.toArray(new Song[0]);
-
-        for (Song song : aEliminar) {
-            canciones.remove(song);
-            observableCanciones.remove(song);
-        }
-
+        canciones.clear();
+        observableCanciones.clear();
         randomPendientes.clear();
-        tablaCanciones.getSelectionModel().clearSelection();
         tablaCanciones.refresh();
     }
 

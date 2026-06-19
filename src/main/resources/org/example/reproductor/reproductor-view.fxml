@@ -31,8 +31,8 @@
                     onAction="#eliminarCancion"
                     styleClass="sidebarButton"/>
 
-            <Button text="Eliminar seleccionadas"
-                    onAction="#eliminarSeleccionadas"
+            <Button text="Limpiar"
+                    onAction="#limpiar"
                     styleClass="sidebarButton"/>
 
             <CheckBox fx:id="checkRandom"
